@@ -6,21 +6,6 @@ let data = [
   {id: 1, title: 'todo 2', completed: true}
 ]
 
-const TodoInput = React.createClass({
-  render: function () {
-    return (
-        <input type="text" placeholder="input todo" onKeyUp={this.keyUp}/>
-    )
-  },
-  keyUp: function (e){
-    if(e.keyCode !== 13)
-      return
-
-    data.push({id: data.length, title: e.target.value, completed: false})
-  }
-})
-
-
 const Todo = React.createClass({
   render: function () {
     return (
@@ -37,26 +22,33 @@ const Todos = React.createClass({
   },
   render: function () {
     let todoNodes = data.map(function(todo) {
-      console.log(1)
       return (
           <Todo data={todo} key={todo.id}/>
       )
     })
     return (
-        <ul>
-        {todoNodes}
-        </ul>
+        <div>
+          <input type="text" placeholder="input todo" onKeyUp={this.keyUp}/>
+          <ul>
+            {todoNodes}
+          </ul>
+        </div>
     )
+  },
+  keyUp: function (e) {
+    if(e.keyCode !== 13)
+      return
+
+    data.push({id: data.length, title: e.target.value, completed: false})
+    this.setState({data: data})
   }
 })
-
 
 
 ReactDOM.render(
     <div>
       <h1>Hello, world!</h1>
-      <TodoInput />
-    <Todos data={data}/>
+      <Todos data={data}/>
     </div>,
   document.getElementById('example')
 )
