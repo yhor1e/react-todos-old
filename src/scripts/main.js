@@ -9,10 +9,17 @@ let data = [
 const Todo = React.createClass({
   render: function () {
     return (
-        <li key={data.id}>
-        <p>todo {this.props.data.id}</p>
+        <li key={this.props.data.id}>
+        <label>{this.props.data.title}</label>
+        <input type="text" defaultValue={this.props.data.title} onKeyUp={this.keyUp}/>
         </li>
     )
+  },
+  keyUp: function (e) {
+    if(e.keyCode !== 13)
+      return
+    data[this.props.data.id].title = e.target.value
+    this.setState({data: data})
   }
 })
 
@@ -38,8 +45,8 @@ const Todos = React.createClass({
   keyUp: function (e) {
     if(e.keyCode !== 13)
       return
-
     data.push({id: data.length, title: e.target.value, completed: false})
+    e.target.value = ''
     this.setState({data: data})
   }
 })
